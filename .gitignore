@@ -4,3 +4,4 @@ package-lock.json
 weather.csv
 formated_weather.csv
 newWeather.csv
+.nyc_output

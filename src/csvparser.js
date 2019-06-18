@@ -2,51 +2,62 @@ const { parseHeader } = require("./headerParser.js");
 const COMMENT = "Comment";
 const REASON = "Other";
 
-const isValidImpactorType = function(impactorType) {
-  if (impactorType) return impactorType.toLowerCase() == "weather";
-  return false;
-};
-
-const isValidAmount = function(amount) {
-  return !isNaN(parseInt(amount)) && amount != "0.00";
-};
-
-const isValidObject = function(output) {
-  return (
-    isValidAmount(output.amount) && isValidImpactorType(output.impactorType)
-  );
-};
-
-const getDivisionNumber = function(text) {
-  return parseInt(text.split(" ")[0]);
-};
-
-const createRequiredObject = function(key, newElement, element) {
-  let output = parseHeader(key);
-  output.amount = newElement[key];
-  output.divisionNumber = getDivisionNumber(element.unnamed);
-  output.comment = COMMENT;
-  output.reason = REASON;
-  if (isValidObject(output)) return output;
-  return;
-};
-
-const removeEmptyKeys = function(element) {
-  for (let key in element) {
-    if (element[key] != "") delete element.key;
+class WeatherParser {
+  isValidImpactorType(impactorType) {
+    if (impactorType) return impactorType.toLowerCase() == "weather";
+    return false;
   }
-  return element;
-};
 
-const parser = function(data) {
-  return data.map(element => {
-    let newElement = removeEmptyKeys(element);
-    keys = Object.keys(newElement);
-    keys.shift();
-    return keys.map(key => {
-      return createRequiredObject(key, newElement, element);
+  isValidAmount(amount) {
+    return !isNaN(parseInt(amount)) && amount != "0.00";
+  }
+
+  isValidObject(output) {
+    return (
+      this.isValidAmount(output.amount) &&
+      this.isValidImpactorType(output.impactorType)
+    );
+  }
+
+  getDivisionNumber(text) {
+    return parseInt(text.split(" ")[0]);
+  }
+
+  createRequiredObject(key, weather) {
+    let requiredObject = parseHeader(key);
+    requiredObject.amount = weather[key];
+    requiredObject.divisionNumber = this.getDivisionNumber(weather.unnamed);
+    requiredObject.comment = COMMENT;
+    requiredObject.reason = REASON;
+    if (this.isValidObject(requiredObject)) return requiredObject;
+    return;
+  }
+
+  removeEmptyKeys(element) {
+    for (let key in element) {
+      if (element[key] == "") delete element.key;
+    }
+    return element;
+  }
+
+  csvParser(weatherDataInCsv, parse) {
+    let parsedWeatherData = parse(weatherDataInCsv, { header: true });
+    return parsedWeatherData.data.map(weather => {
+      let filterdData = this.removeEmptyKeys(weather);
+      let keys = Object.keys(filterdData);
+      keys.shift();
+      return keys.map(key => {
+        return this.createRequiredObject(key, filterdData);
+      });
     });
-  });
-};
+  }
 
-module.exports = { parser };
+  jsonParser(weatherDataInJson, parse) {
+    let result = [];
+    weatherDataInJson.shift();
+    result = result.concat(...weatherDataInJson).filter(element => element);
+    return parse(result);
+  }
+}
+
+module.exports = new WeatherParser();
