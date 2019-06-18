@@ -7,6 +7,7 @@
     "test": "test"
   },
   "dependencies": {
+    "nyc": "^14.1.1",
     "papaparse": "^5.0.0"
   },
   "devDependencies": {
