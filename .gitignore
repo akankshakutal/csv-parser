@@ -2,3 +2,5 @@ output
 node_modules/
 package-lock.json
 weather.csv
+formated_weather.csv
+newWeather.csv
