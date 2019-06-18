@@ -41,9 +41,9 @@ class WeatherParser {
   }
 
   csvParser(weatherDataInCsv, parse) {
-    let parsedWeatherData = parse(weatherDataInCsv, { header: true });
+    const parsedWeatherData = parse(weatherDataInCsv, { header: true });
     return parsedWeatherData.data.map(weather => {
-      let filterdData = this.removeEmptyKeys(weather);
+      const filterdData = this.removeEmptyKeys(weather);
       let keys = Object.keys(filterdData);
       keys.shift();
       return keys.map(key => {

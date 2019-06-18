@@ -6,9 +6,9 @@ const DESTINATION_FILE_PATH = "./newWeather.csv";
 const UNICODE = "utf8";
 
 const main = function() {
-  let weatherData = fs.readFileSync(SOURCE_FILE_PATH, UNICODE);
-  let weatherDataInJson = WeatherParser.csvParser(weatherData, parse);
-  let weatherDataInCsv = WeatherParser.jsonParser(weatherDataInJson, unparse);
+  const weatherData = fs.readFileSync(SOURCE_FILE_PATH, UNICODE);
+  const weatherDataInJson = WeatherParser.csvParser(weatherData, parse);
+  const weatherDataInCsv = WeatherParser.jsonParser(weatherDataInJson, unparse);
   fs.writeFileSync(DESTINATION_FILE_PATH, weatherDataInCsv);
 };
 

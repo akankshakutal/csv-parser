@@ -8,25 +8,25 @@ describe("WeatherParser", function() {
     input += "708 F4L Chicago,1000,1200";
     let actual = WeatherParser.csvParser(input, parse);
     let data1 = {
-        week: 1,
-        periodNumber: 1,
-        year: 2017,
-        impactorType: "Weather",
-        amount: "1000",
-        divisionNumber: 708,
-        comment: "Comment",
-        reason: "Other"
-      },
-      data2 = {
-        week: 2,
-        periodNumber: 2,
-        year: 2017,
-        impactorType: "Weather",
-        amount: "1200",
-        divisionNumber: 708,
-        comment: "Comment",
-        reason: "Other"
-      };
+      week: 1,
+      periodNumber: 1,
+      year: 2017,
+      impactorType: "Weather",
+      amount: "1000",
+      divisionNumber: 708,
+      comment: "Comment",
+      reason: "Other"
+    };
+    let data2 = {
+      week: 2,
+      periodNumber: 2,
+      year: 2017,
+      impactorType: "Weather",
+      amount: "1200",
+      divisionNumber: 708,
+      comment: "Comment",
+      reason: "Other"
+    };
     let expected = [[data1, data2]];
     assert.deepEqual(actual, expected);
   });
