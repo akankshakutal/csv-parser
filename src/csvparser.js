@@ -9,9 +9,9 @@ const parser = function(data) {
       let output = parseHeader(key);
       output.amount = newElement[key];
       output.divisionNumber = getDivisionNumber(element["unnamed"]);
-      output.comment = "";
-      output.reason = "something";
-      if (isValidObject(output)) return output;
+      output.comment = "system entered";
+      output.reason = "other";
+      if (isValidAmount(output.amount) && isValidImpactorType(output.impactorType)) return output;
       return;
     });
   });
@@ -28,23 +28,13 @@ const getDivisionNumber = function(text) {
   return parseInt(text.split(" ")[0]);
 };
 
-const isValidObject = function(object) {
-  return (
-    !isNaN(object["divisionNumber"]) &&
-    !isNaN(object["week"]) &&
-    !isNaN(object["periodNumber"]) &&
-    !isNaN(object["year"]) &&
-    isValidAmount(object["amount"]) &&
-    isValidImpactorType(object["impactorType"])
-  );
-};
-
 const isValidImpactorType = function(impactorType) {
   if (impactorType) return impactorType.toLowerCase() == "weather";
+  return false;
 };
 
 const isValidAmount = function(amount) {
-    return !isNaN(parseInt(amount));
-}
+  return !isNaN(parseInt(amount)) && amount != "0.00";
+};
 
 module.exports = { parser };
