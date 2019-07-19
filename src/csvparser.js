@@ -35,7 +35,7 @@ class WeatherParser {
 
   removeEmptyKeys(element) {
     for (let key in element) {
-      if (element[key] == "") delete element.key;
+      if (element[key]) delete element.key;
     }
     return element;
   }
